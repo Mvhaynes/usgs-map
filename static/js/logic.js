@@ -1,6 +1,5 @@
 // GeoJSON data query URL 
 var url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson'
-const api_key = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
 
 // Get data and call function to make the map 
 d3.json(url).then(function (data) {
