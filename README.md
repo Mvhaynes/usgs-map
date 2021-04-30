@@ -18,3 +18,7 @@ Each marker's size represents an earthquake's magnitude and the color represents
 
 ![image](images/depth.png)
 The visualization offers three layers to choose from: 'Satellite', 'Grayscale', and 'Outside' (tile layers obtained from Mapbox). Users can use the upper right controls to toggle between layers. 
+
+## Tools 
+Leaflet, Javascript
+
