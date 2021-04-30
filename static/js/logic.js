@@ -27,7 +27,7 @@ function createFeatures(data) {
   function popups(feature, layer) {
     layer.bindPopup(
       "<h3>" + feature.properties.place + "</h3><hr>" +
-      "<p>Magnitude: " + feature.properties.mag + 
+      "<p>Magnitude: " + feature.properties.mag +
       "<br></br>Depth: " + feature.geometry.coordinates[2] +
       "<br></br>Time: " + new Date(feature.properties.time) + "</p"
     );
@@ -59,14 +59,6 @@ function createFeatures(data) {
   createMap(earthquakes);
 }
 
-
-
-// L.geoJSON(someGeojsonFeature, {
-//   pointToLayer: function (feature, latlng) {
-//       return L.circleMarker(latlng, marker);
-//   }
-// }).addTo(map);
-
 function createMap(earthquakes) {
 
   // Map layers 
@@ -95,9 +87,9 @@ function createMap(earthquakes) {
 
   // Contain all the layers 
   var baseMaps = {
+    "Outdoors": outdoorsMap,
     "Grayscale": lightMap,
-    "Satellite": satelliteTile,
-    "Outdoors": outdoorsMap
+    "Satellite": satelliteTile
   };
 
   // Marker layer
@@ -111,11 +103,32 @@ function createMap(earthquakes) {
       38.09, -95.71
     ],
     zoom: 5,
-    layers: [lightMap, earthquakes]
+    layers: [outdoorsMap, earthquakes]
   });
 
   // Legend
   L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
   }).addTo(myMap);
+
+
+  var legend = L.control({ position: 'bottomright' });
+
+  legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+      grades = [-10, 10, 30, 50, 70, 90]
+
+    for (var i = 0; i < grades.length; i++) {
+      div.innerHTML +=
+        // get marker color 
+        '<i style="background:' + markerColor(grades[i]) + '"></i> ' +
+
+        // Legend labels (if i+1 exists: add a dash and i+1. Else: current number and + sign )
+        grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+    return div;
+  };
+
+  legend.addTo(myMap);
 }
