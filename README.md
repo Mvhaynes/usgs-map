@@ -12,8 +12,9 @@ Raw geoJSON: <br>
     "features":[{"type":"Feature","properties":{"mag":1.3,"place":"30 km SW of Hawthorne, Nevada","time":1619821705199,...}`
 
 ## Visualization 
+Each marker's size represents an earthquake's magnitude and the color represents the depth. <br> Users can click on each point to learn more about the event. 
 ![image](images/overall.png)
-The webpage uses Leaflet and Javascript to plot the geoJSON data. Each marker size represents an earthquake's magnitude and the color represents the depth. Users can click on each point to learn more about the event. 
+
 
 ![image](images/depth.png)
-The visualization offers three layers to choose from: 'Satellite', 'Grayscale', and 'Outside' (tile layers obtained from Mapbox). 
+The visualization offers three layers to choose from: 'Satellite', 'Grayscale', and 'Outside' (tile layers obtained from Mapbox). Users can use the upper right controls to toggle between layers. 
