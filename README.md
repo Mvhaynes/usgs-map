@@ -3,9 +3,9 @@
 A webpage for visualizing earthquake geoJSON data obtained from US Geological Surveys website. 
 
 ## Summary 
-This visualization turns illegible geoJSON data into an interactive visualization.
+This visualization turns raw geoJSON data into an interactive visualization.
 
-Raw geoJSON: 
+Raw geoJSON: <br>
 `{"type":"FeatureCollection",
 "metadata":
     {"generated":1619824149000,"url":"https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson","title":"USGS All Earthquakes, Past Month","status":200,"api":"1.10.3","count":2617},
