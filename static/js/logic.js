@@ -1,40 +1,57 @@
+// GeoJSON data query URL 
 var url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson'
 
-d3.json(url).then(function(data) {
+// Get data and call function to make the map 
+d3.json(url).then(function (data) {
   createFeatures(data.features);
 });
 
+// Function to get marker size 
+function markerSize(mag) {
+  return mag * 5;
+};
 
+// Function to get color based on depth 
+function markerColor(depth) {
+  return depth > 90 ? '#b30000' :
+    depth > 70 ? '#e34a33' :
+      depth > 50 ? '#fc8d59' :
+        depth > 30 ? '#fdbb84' :
+          depth > 10 ? '#fdd49e' :
+            '#fef0d9'
+};
 
 function createFeatures(data) {
-  
+
   // Information popups for each marker 
   function popups(feature, layer) {
     layer.bindPopup(
-      "<h3>" + feature.properties.place + "</h3><hr>" + 
-      "<p>Magnitude: " + feature.properties.mag + "<br></br>" + 
-      "Time: " + new Date(feature.properties.time) + "</p"
-      );
+      "<h3>" + feature.properties.place + "</h3><hr>" +
+      "<p>Magnitude: " + feature.properties.mag + 
+      "<br></br>Depth: " + feature.geometry.coordinates[2] +
+      "<br></br>Time: " + new Date(feature.properties.time) + "</p"
+    );
   };
- 
+
   // Add features to map 
   var earthquakes = L.geoJSON(data, {
-    
-    // Bind pop up 
+
+    // Bind pop ups
     onEachFeature: popups,
-    
-    // Create marker 
-    pointToLayer: function(feature, coordinate) { 
-      
+
+    // Create circle markers
+    pointToLayer: function (feature, coordinate) {
+
       // Marker style
       var marker = {
-        radius: feature.properties.mag*5,
-        fillColor: "#ff7800",
+        radius: markerSize(feature.properties.mag),
+        fillColor: markerColor(coordinate.alt),
         color: "#000",
         weight: 1,
         opacity: 1,
         fillOpacity: 0.8
       };
+
       return L.circleMarker(coordinate, marker)
     }
   });
@@ -74,7 +91,7 @@ function createMap(earthquakes) {
     maxZoom: 18,
     id: "outdoors-v11",
     accessToken: api_key
-});
+  });
 
   // Contain all the layers 
   var baseMaps = {
