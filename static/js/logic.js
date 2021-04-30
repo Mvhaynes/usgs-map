@@ -4,27 +4,55 @@ d3.json(url).then(function(data) {
   createFeatures(data.features);
 });
 
-function createFeatures(earthquakeData) {
+
+
+function createFeatures(data) {
   
   // Information popups for each marker 
-  function onEachFeature(feature, layer) {
+  function popups(feature, layer) {
     layer.bindPopup(
       "<h3>" + feature.properties.place + "</h3><hr>" + 
-      "<p>Time: " + new Date(feature.properties.time) + "<br></br>" +
-      "Magnitude: " + feature.properties.mag + "</p>"
+      "<p>Magnitude: " + feature.properties.mag + "<br></br>" + 
+      "Time: " + new Date(feature.properties.time) + "</p"
       );
-  }
-
-  var earthquakes = L.geoJSON(earthquakeData, {
-    onEachFeature: onEachFeature
+  };
+ 
+  // Add features to map 
+  var earthquakes = L.geoJSON(data, {
+    
+    // Bind pop up 
+    onEachFeature: popups,
+    
+    // Create marker 
+    pointToLayer: function(feature, coordinate) { 
+      
+      // Marker style
+      var marker = {
+        radius: feature.properties.mag*5,
+        fillColor: "#ff7800",
+        color: "#000",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8
+      };
+      return L.circleMarker(coordinate, marker)
+    }
   });
 
   createMap(earthquakes);
 }
 
+
+
+// L.geoJSON(someGeojsonFeature, {
+//   pointToLayer: function (feature, latlng) {
+//       return L.circleMarker(latlng, marker);
+//   }
+// }).addTo(map);
+
 function createMap(earthquakes) {
 
-  // Map styles 
+  // Map layers 
   var satelliteTile = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
     tileSize: 512,
@@ -48,19 +76,19 @@ function createMap(earthquakes) {
     accessToken: api_key
 });
 
-  // Define a baseMaps object to hold our base layers
+  // Contain all the layers 
   var baseMaps = {
-    "Satellite": satelliteTile,
     "Grayscale": lightMap,
+    "Satellite": satelliteTile,
     "Outdoors": outdoorsMap
   };
 
-  // Create overlay object to hold our overlay layer
+  // Marker layer
   var overlayMaps = {
     "Earthquakes": earthquakes
   };
 
-  // Create our map, giving it the streetmap and earthquakes layers to display on load
+  // Default map display
   var myMap = L.map("map", {
     center: [
       38.09, -95.71
@@ -69,6 +97,7 @@ function createMap(earthquakes) {
     layers: [lightMap, earthquakes]
   });
 
+  // Legend
   L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
   }).addTo(myMap);
