@@ -21,6 +21,7 @@ function markerColor(depth) {
             '#fef0d9'
 };
 
+// Function to create map elements 
 function createFeatures(data) {
 
   // Information popups for each marker 
@@ -33,7 +34,7 @@ function createFeatures(data) {
     );
   };
 
-  // Add features to map 
+  // Read geoJSON data
   var earthquakes = L.geoJSON(data, {
 
     // Bind pop ups
@@ -106,21 +107,25 @@ function createMap(earthquakes) {
     layers: [outdoorsMap, earthquakes]
   });
 
-  // Legend
+  // Layer and overlay legend
   L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
   }).addTo(myMap);
 
+  // Add color legend 
+  var legend = L.control({ 
+    position: 'bottomright' 
+  });
 
-  var legend = L.control({ position: 'bottomright' });
-
-  legend.onAdd = function (map) {
+  legend.onAdd = function() {
 
     var div = L.DomUtil.create('div', 'info legend'),
       grades = [-10, 10, 30, 50, 70, 90]
 
+    // Loop through grades to create labels 
     for (var i = 0; i < grades.length; i++) {
       div.innerHTML +=
+        
         // get marker color 
         '<i style="background:' + markerColor(grades[i]) + '"></i> ' +
 
