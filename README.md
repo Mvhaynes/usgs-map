@@ -1,11 +1,11 @@
 # usgs-map
 
-A webpage for visualizing earthquake geoJSON data obtained from US Geological Surveys website. 
+A webpage for visualizing the last 30 days of earthquake data obtained from [US Geological Surveys website](https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php). <br>
 View the interactive map [here](https://mvhaynes.github.io/usgs-map/). 
 
 
 ## Summary 
-This visualization turns raw geoJSON data into an interactive visualization.
+This visualization turns raw geoJSON data into an interactive visualization to display the location, magnitude, and depth of each event. 
 
 Raw geoJSON: <br>
 `{"type":"FeatureCollection",
