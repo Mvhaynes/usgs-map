@@ -2,8 +2,7 @@
 
 A webpage for visualizing earthquake geoJSON data obtained from US Geological Surveys website. 
 View the interactive map [here](https://mvhaynes.github.io/usgs-map/). 
-
-<br><hr>
+<hr>
 ## Summary 
 This visualization turns raw geoJSON data into an interactive visualization.
 
