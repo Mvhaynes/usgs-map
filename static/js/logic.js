@@ -1,9 +1,10 @@
 // GeoJSON data query URL 
 var url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson'
+var platesJson = 'https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json'
 
 // Get data and call function to make the map 
 d3.json(url).then(function (data) {
-  createFeatures(data.features);
+  createFeatures(data);
 });
 
 // Function to get marker size 
@@ -56,7 +57,7 @@ function createFeatures(data) {
       return L.circleMarker(coordinate, marker)
     }
   });
-
+  
   createMap(earthquakes);
 }
 
@@ -93,11 +94,6 @@ function createMap(earthquakes) {
     "Satellite": satelliteTile
   };
 
-  // Marker layer
-  var overlayMaps = {
-    "Earthquakes": earthquakes
-  };
-
   // Default map display
   var myMap = L.map("map", {
     center: [
@@ -107,10 +103,29 @@ function createMap(earthquakes) {
     layers: [outdoorsMap, earthquakes]
   });
 
-  // Layer and overlay legend
-  L.control.layers(baseMaps, overlayMaps, {
-    collapsed: false
-  }).addTo(myMap);
+  // Read tectonic plate geodata 
+  d3.json(platesJson).then(function(data) {
+    
+    // Plate lines  
+    var plates = L.geoJSON(data, {
+      style: {
+        'color': 'yellow',
+        'weight': 2
+      }
+    });
+
+    // Marker layer
+    var overlayMaps = {
+      "Earthquakes": earthquakes,
+      "Tectonic Plates": plates 
+    };
+
+    // Layer and overlay legend
+    L.control.layers(baseMaps, overlayMaps, {
+      collapsed: false
+    }).addTo(myMap);
+  });
+
 
   // Add color legend 
   var legend = L.control({ 
@@ -136,4 +151,10 @@ function createMap(earthquakes) {
   };
 
   legend.addTo(myMap);
-}
+
+};
+
+
+
+
+  
